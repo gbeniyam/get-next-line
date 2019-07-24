@@ -10,23 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
- *	Read line using read(fd, buffer pointer/location, buff_size)
- *	output to **line using str functions from libft?
- *	Read() will mostly take care of end of line? File?
- *
- *	read() returns size of bytes read. use to point?
- *	read(fd, *buffer, buff size)
- *
- *	BUFF_SIZE 32 defined in header
- *
- *	fd is file identifier from OS
- *
- *	======
- *	=====
- */
-
-// check if new line character inside buffer
 #include "get_next_line.h"
 
 static int is_full_line(char *buffer)
@@ -76,7 +59,7 @@ static int return_to_line(char **buffer, char **line)
 	else
 	{
 		if (!(leftovers = ft_strdup(&buff_data[i + 1])))
-				return (0);
+			return (0);
 		free(*buffer);
 		*buffer = leftovers;
 	}
@@ -114,5 +97,5 @@ int		get_next_line(const int fd, char **line)
 		return (finish(&buffer[fd]));
 	else if (bytes_read == -1 || !return_to_line(&buffer[fd], line))
 		return (-1);
-return (1);
+	return (1);
 }
