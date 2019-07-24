@@ -1,28 +1,28 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: gbeniyam <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/07/11 22:22:52 by gbeniyam          #+#    #+#             */
-/*   Updated: 2019/07/11 23:09:15 by gbeniyam         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-//TODO DO NOT SUBMIT. DELET DIS
-#include "get_next_line.h"
+#include <string.h>
 #include <stdio.h>
+#include "get_next_line.h"
+#include <fcntl.h>
 
-int		main(int argc, char **argv)
+/*
+** 1 line via STDIN with 8 chars with Line Feed
+*/
+
+int				main(int argc, char **argv)
 {
-	char *str;
-	printf("Main/*str good\n");
+	char		*line;
+	int			fd;
+	int			ret;
+	int			count_lines;
+	int			errors;
 
-	while (get_next_line(0, &str))
+	fd = open(argv[1], O_RDONLY);
+	count_lines = 0;
+	errors = 0;
+	line = NULL;
+	while ((ret = get_next_line(fd, &line)) > 0)
 	{
-		printf("%s\n", str);
+		printf("%s\n", line);
+		free(line);
 	}
-	printf("Success!\n");
 	return (0);
 }

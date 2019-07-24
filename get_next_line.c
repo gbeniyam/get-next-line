@@ -23,7 +23,6 @@
  *	fd is file identifier from OS
  *
  *	======
- *	continue using printf to find where segfault exists
  *	=====
  */
 
@@ -60,26 +59,35 @@ static int return_to_line(char **buffer, char **line)
 {
 	int i;
 	char *leftovers;
-
+	char *buff_data;
+	
 	i = 0;
-	while (*buffer[i] != '\n')
+	buff_data = *buffer;
+	while (buff_data[i] && buff_data[i] != '\n')
 		i++;
-	if(!(*line = ft_strnew(i)))
+	if (!(*line = ft_strnew(i)))
 		return (0);
 	ft_strncpy(*line, *buffer, i);
-	if (*buffer[i + 1] == '\0')
+	if (!buff_data[i] || buff_data[i + 1] == '\0')
 	{
 		free(*buffer);
 		*buffer = NULL;
 	}
 	else
 	{
-		if (!(leftovers = ft_strdup(*buffer[i + 1])))
+		if (!(leftovers = ft_strdup(&buff_data[i + 1])))
 				return (0);
 		free(*buffer);
 		*buffer = leftovers;
 	}
 	return (1);
+}
+
+int		finish(char **buffer)
+{
+	free(*buffer);
+	*buffer = NULL;
+	return (0);
 }
 
 int		get_next_line(const int fd, char **line)
@@ -96,18 +104,13 @@ int		get_next_line(const int fd, char **line)
 	while ((bytes_read = read(fd, &buffer[fd][len], BUFF_SIZE)) > 0)
 	{
 		if (is_full_line(buffer[fd]))
-			break ;
-		else
-		{
-			extend_buffer(&buffer[fd]);
-		}
+			break;
+		extend_buffer(&buffer[fd]);
+		len = ft_strlen(buffer[fd]);
 	}
-	if (bytes_read == 0 && buffer[fd] == NULL)
-		return (0);
-	else if (bytes_read == -1)
+	if (bytes_read == 0 && len == 0)
+		return (finish(&buffer[fd]));
+	else if (bytes_read == -1 || !return_to_line(&buffer[fd], line))
 		return (-1);
-	if (!return_to_line(&buffer[fd], line))
-		return (-1);
-	return (1);
-
+return (1);
 }
