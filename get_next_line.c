@@ -100,6 +100,8 @@ int		get_next_line(const int fd, char **line)
 		return (-1);
 	if (!buffer[fd])
 		buffer[fd] = ft_strnew(BUFF_SIZE);
+	else
+		extend_buffer(&buffer[fd]);
 	len = ft_strlen(buffer[fd]);
 	while ((bytes_read = read(fd, &buffer[fd][len], BUFF_SIZE)) > 0)
 	{
