@@ -1,37 +1,10 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-----:---F1  *scratch*      All L1     (Fundamental)-----------------------------------------------------------
-File Edit Options Buffers Tools C Help
 #include "get_next_line.h"
 #include <stdio.h>
 
-						   int             main(int argc, char **argv)
+int		main(int argc, char **argv)
 {
   char *str;
-  printf("Main/*str good\n");
+  printf("Main /*str good\n");
 
   while (get_next_line(0, &str))
     {
@@ -41,13 +14,3 @@ File Edit Options Buffers Tools C Help
   printf("Success!\n");
   return (0);
 }
-
-// TALK ABOUT MAKEFILE
-
-
-
-
-
-
--uu-:---F1  main.c         All L1     (C/l Abbrev)------------------------------------------------------------
-Loading cc-mode...done
