@@ -4,7 +4,7 @@
 int		main(int argc, char **argv)
 {
   char *str;
-  printf("Main /*str good\n");
+  printf("Main /*str good\n\n");
 
   while (get_next_line(0, &str))
     {
