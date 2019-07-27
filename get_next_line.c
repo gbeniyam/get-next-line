@@ -6,13 +6,13 @@
 /*   By: gbeniyam <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/09 19:51:58 by gbeniyam          #+#    #+#             */
-/*   Updated: 2019/07/14 22:02:46 by gbeniyam         ###   ########.fr       */
+/*   Updated: 2019/07/24 21:14:39 by gbeniyam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static int is_full_line(char *buffer)
+static int		is_full_line(char *buffer)
 {
 	int i;
 
@@ -26,10 +26,10 @@ static int is_full_line(char *buffer)
 	return (0);
 }
 
-static void extend_buffer(char **old_buffer)
+static void		extend_buffer(char **old_buffer)
 {
-	char *new_str;
-	int extended_buff_size;
+	char	*new_str;
+	int		extended_buff_size;
 
 	extended_buff_size = BUFF_SIZE + ft_strlen(*old_buffer);
 	new_str = ft_strnew(extended_buff_size);
@@ -38,12 +38,12 @@ static void extend_buffer(char **old_buffer)
 	*old_buffer = new_str;
 }
 
-static int return_to_line(char **buffer, char **line)
+static int		return_to_line(char **buffer, char **line)
 {
-	int i;
-	char *leftovers;
-	char *buff_data;
-	
+	int			i;
+	char		*leftovers;
+	char		*buff_data;
+
 	i = 0;
 	buff_data = *buffer;
 	while (buff_data[i] && buff_data[i] != '\n')
@@ -66,18 +66,18 @@ static int return_to_line(char **buffer, char **line)
 	return (1);
 }
 
-int		finish(char **buffer)
+int				finish(char **buffer)
 {
 	free(*buffer);
 	*buffer = NULL;
 	return (0);
 }
 
-int		get_next_line(const int fd, char **line)
+int				get_next_line(const int fd, char **line)
 {
-	static char *buffer[MAX_FD];
-	int len;
-	int bytes_read;
+	static char		*buffer[MAX_FD];
+	int				len;
+	int				bytes_read;
 
 	if (!line || fd < 0 || fd > MAX_FD)
 		return (-1);
@@ -89,7 +89,7 @@ int		get_next_line(const int fd, char **line)
 	while ((bytes_read = read(fd, &buffer[fd][len], BUFF_SIZE)) > 0)
 	{
 		if (is_full_line(buffer[fd]))
-			break;
+			break ;
 		extend_buffer(&buffer[fd]);
 		len = ft_strlen(buffer[fd]);
 	}
