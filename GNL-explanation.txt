@@ -1,0 +1,64 @@
+is_full_line()
+	check if buffer passed in by pointer contains a new line.
+	Return 1 if '\n' is found in buffer, 0 otherwise.
+
+extend_buffer()
+	take the current ("old") buffer and extend the size of it.
+	Add BUFF_SIZE length to the length of the current buffer length. (eg: 32+64)
+		-value of this new buff size is stored in extended_buff_size.
+	Allocate new memory (ft_strnew), of size extended_buff_size.
+	Copy data in current (old) buffer into the new (extended size) buffer.
+	Free memory at old buffer.
+	old buffer now points to the new buffer's address (with extended buff size).
+
+return_to_line()
+	Take in double pointer to buffer and line (provided by main).
+	Copy full line from **buffer to **line.
+	If there's nothing after buffer (buff_data[i + 1] = \0),
+		free the buffer from memory and set the buffer pointer to null.
+	Otherwise, any data after '\n' in buffer is stored in *leftovers.
+		If the buffers string isn't duplicated or fails to allocate memory, 
+		0 is returned.
+	Memory allocated at buffer is freed, and buffer now points to address stored
+	in leftovers to be used for the next function call(aka line).
+	Return 1 out of function to indicate that line was returned succesfully from
+	old buffer.
+
+finish()
+	Last instructions, used when last get_next_line() function call had
+	bytes_read as 0 and buffer length as 0, indicating nothing more left to
+	return to **line.
+
+get_next_line()
+	Using static char double pointer to temporarily store a string (aka buffer)
+	for any given file descriptor (fd). 'Static' variable is used to save values
+	between function calls, until the end of the main program's use.
+
+	Checking for null-returned dobule pointer line, and improve fd value (below 0 or above 9999. Not expecting that many files).
+	Check if **buffer points to null and allocate memory to it
+	with (initial) size of BUFF_SIZE (first run; first get line request).
+	
+	Otherwise, if buffer already exists (such as on the 2nd line, second get line
+	request), run extend_buffer function to increase size of the buffer array.
+
+	Use 'len' as address index/pointer to know where I'm at in the buffer array for
+	reading, copying, etc.
+
+	Use read() standard C library function to read bytes with a buffer size of
+	BUFF_SIZE, from a file identified by 'fd', into the double array buffer[fd][len],
+	as long as bytes_read is greater than 0. When bytes read is 0, that means read()
+	has found the end of the file. -1 means there was a read error. 
+		If we found a '\n' in the current iteration of the read cycle, break
+		out of the loop.
+	Extend the buffer size if we haven't found a full line yet, and re-assign
+	lenth of the new buffer to use as an indicator of where in the buffer to read from.
+
+	After the read loop, if byes_read is 0 and length of the buffer is 0,
+	that means the file has been read completely and there's nothing more to return.
+	The finish() function is called, and **buffer is sent through as a parameter 
+	to have it's allocated memory freed.
+		Otherwise, if there's an error (bytes_read is -1) or return_to_line() function
+		call returns false (fails), return an error (-1).
+	If the above the cases weren't met (file wasn't completely read, and no errors were
+	returned), then return 1, indicating that a line was succesfully read but there's
+	more to read for the next get_next_line() call. 
